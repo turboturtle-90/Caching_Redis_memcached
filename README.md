@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "«Кэширование Redis/memcached» - `Смирнов Максим`
+# Домашнее задание к занятию «Кэширование Redis/memcached» - `Смирнов Максим`
 
 ### Задание 1. Кеширование
 Приведите примеры проблем, которые может решить кеширование.
@@ -11,63 +11,29 @@
 
 ---
 
-
-Задание 2. Memcached
+### Задание 2. Memcached
 Установите и запустите memcached.
-
 Приведите скриншот systemctl status memcached, где будет видно, что memcached запущен.
 
-Задание 3. Удаление по TTL в Memcached
-Запишите в memcached несколько ключей с любыми именами и значениями, для которых выставлен TTL 5.
+`Скрин статуса memcached`
+![Memcached-status.jpg](https://github.com/turboturtle-90/Caching_Redis_memcached/blob/e04db39a7c14daed2583f1590184e713f95d75cb/Memcached-status.jpg)
 
+---
+
+### Задание 3. Удаление по TTL в Memcached
+Запишите в memcached несколько ключей с любыми именами и значениями, для которых выставлен TTL 5.
 Приведите скриншот, на котором видно, что спустя 5 секунд ключи удалились из базы.
 
-Задание 4. Запись данных в Redis
-Запишите в Redis несколько ключей с любыми именами и значениями.`
+`Скрин записи и вытеснения из кэша`
 
+![Memcached-set.jpg](https://github.com/turboturtle-90/Caching_Redis_memcached/blob/e04db39a7c14daed2583f1590184e713f95d75cb/Memcached-set.jpg)
+
+---
+
+### Задание 4. Запись данных в Redis
+Запишите в Redis несколько ключей с любыми именами и значениями.
 Через redis-cli достаньте все записанные ключи и значения из базы, приведите скриншот этой операции.
 
-`Балансировка на 4 уровне по roubdrobin`
-![1-level4.jpg](https://github.com/turboturtle-90/Homework_clustering_and_load_balancing/blob/7705286e7aea06eb754ecf0cc6f2510aa3f7173f/1-level4.jpg)
+`Скрин записи и вызова из кэша Redis`
+![Redis-hset-get.jpg](https://github.com/turboturtle-90/Caching_Redis_memcached/blob/e04db39a7c14daed2583f1590184e713f95d75cb/Redis-hset-get.jpg)
 
-`Текст конфига /etc/haproxy/haproxy.cfg в части балансировки roundronib на 4 уровне приведен ниже :`
-
-```                                                         
-listen web_tcp
-
-        bind :1325
-        balance roundrobin
-        server s1 127.0.0.1:8888 check inter 3s
-        server s2 127.0.0.1:9999 check inter 3s
-```
-
-### Задание 2
-
-`Ссылка на .cfg`
-
-https://github.com/turboturtle-90/Homework_clustering_and_load_balancing/blob/593b469a59cef8dcb0deedeb24426b0453281f6e/haproxy.cfg-assignment2 
-
-`Балансировка на 7 уровне по roubdrobin с весовыми множителями и обработкой только при адресации к домену example.com`
-![2-weighted-level7.jpg](https://github.com/turboturtle-90/Homework_clustering_and_load_balancing/blob/593b469a59cef8dcb0deedeb24426b0453281f6e/2-weighted-level7.jpg)
-
-
-`Текст конфига /etc/haproxy/haproxy.cfg в части балансировки roundronib на 7 уровне приведен ниже :`
-
-```                                                         
-frontend example  # секция фронтенд
-        mode http
-        bind :8088
-        #default_backend web_servers
-        acl ACL_example.com hdr(host) -i example.com
-        use_backend web_servers if ACL_example.com
-
-backend web_servers    # секция бэкенд
-        mode http
-        balance roundrobin
-        option httpchk
-        http-check send meth GET uri /index.html
-        server s1 127.0.0.1:8888 check weight 2
-        server s2 127.0.0.1:9999 check weight 3
-        server s3 127.0.0.1:9999 check weight 4
-```
----
